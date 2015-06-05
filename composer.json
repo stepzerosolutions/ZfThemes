@@ -1,14 +1,13 @@
 {
-    "name": "stepzerosolutions/zfthemes",
-    "description": "Zend framework 2 theme support function",
-    "require": {
-        "zendframework/zendframework": "~2.4"
-    },
-    "authors": [
-        {
-            "name": "Don Nuwinda",
-            "email": "info@stepzero.solutions"
-        }
-    ],
-    "minimum-stability": "beta"
+  "name" : "stepzerosolutions/zfthemes",
+  "description" : "Zend framework 2 theme support function",
+  "version" : "1.0.0",
+  "require" : {
+    "zendframework/zendframework" : "~2.4"
+  },
+  "minimum-stability" : "beta",
+  "authors" : [ {
+    "name" : "Don Nuwinda",
+    "email" : "info@stepzero.solutions"
+  } ]
 }
