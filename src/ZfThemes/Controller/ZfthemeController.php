@@ -9,19 +9,40 @@
 
 namespace ZfThemes\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use ZbeAdmin\Controller\AdminController;
+use Zend\Authentication\AuthenticationService;
+use ZfThemes\Manager\PublicfilestructureManager;
 
-class ZfthemeController extends AbstractActionController
+class ZfthemeController extends AdminController
 {
+    /*
+    * First starting point function
+    * Will carry out following activities
+    * 1. Create theme file structure at root -> themes folder
+    * 2. Create theme Public structure at root -> public -> themes
+    * 3. Create config template map file in config/autoload/local.config.php
+    */
     public function indexAction()
     {
-        return array();
-    }
+        
+        $this->authService = new AuthenticationService();
+        if( ! $this->authService->hasIdentity() ){
+            $this->redirectAdminIndex();
+        }
+        $layout = $this->layout();
+        $layout->setTemplate('admin/dashboard/layout');
+        $themefileManager = $this->getServiceLocator()->get('themefileServices');
+        $themeManager = $this->getServiceLocator()->get('templateMapService');
+        $publicfilestructureManager = $this->getServiceLocator()->get('publicfilestructureManager');
+        
+        $themefileManager->setThemeFileStructure();
+        $themeManager->processTemplateMapping();
+        $publicfilestructureManager->readModules();
+        $publicfilestructureManager->movePublicToThemes();
 
-    public function fooAction()
-    {
-        // This shows the :controller and :action parameters in default route
-        // are working when you browse to /zftheme/zftheme/foo
-        return array();
+        
+        return array('output' => $themefileManager->output);
     }
+    
+    
 }

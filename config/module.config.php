@@ -20,25 +20,6 @@ return array(
                         'action'        => 'index',
                     ),
                 ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    // This route is a sane default when developing a module;
-                    // as you solidify the routes for your module, however,
-                    // you may want to remove it and replace it with more
-                    // specific routes.
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
             ),
         ),
     ),
@@ -46,5 +27,8 @@ return array(
         'template_path_stack' => array(
             'ZfThemes' => __DIR__ . '/../view',
         ),
+        'template_map' => array(
+            'zfThemes/Zftheme/index' => __DIR__ . '/../view/zf-themes/zftheme/index.phtml',
+        )
     ),
 );
