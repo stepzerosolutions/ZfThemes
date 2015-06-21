@@ -39,6 +39,26 @@ Alternatively, you can install using native git submodules:
     git clone git://github.com/stepzerosolutions/ZfThemes.git --recursive
 
 
+What is ZfThemes
+--------------------
+ZfThemes copy all your module view files to root/themes/themename/module folder 
+For example if your theme is default your application view files will be copied to 
+
+<code>root/themes/themename/module/Application/view</code>
+
+If you have css,js,images for your module include those in module/public/ folder
+For example if your module is ZfThemes and have module css file called style.css
+Your css file should be in 
+
+<code>root/module/zfthemes/public/css/style.css</code>
+
+Any folders and files uder public folder will copied to public/themes/default/zfthemes/ folder
+
+
+How to use ZfThemes
+--------------------
+
+
 
 Requirements
 --------------------

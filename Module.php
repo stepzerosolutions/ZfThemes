@@ -9,7 +9,9 @@
 
 namespace ZfThemes;
 
-class Module
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+
+class Module implements AutoloaderProviderInterface
 {
     public function getAutoloaderConfig()
     {
