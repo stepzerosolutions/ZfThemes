@@ -61,7 +61,7 @@ implements ServiceManagerAwareInterface, EventManagerAwareInterface, TemplateMap
         $cwd = getcwd();
         $config = $this->serviceManager->get('config');
         if( $config["global"]["clear_config_global"] ) $this->clearGlobalConfigFile();
-        if( !file_exists( $this->globalconfigFile  ) ) $this->initcurrentTheme();
+        //if( !file_exists( $this->globalconfigFile  ) ) $this->initcurrentTheme();
         return true;
     }
     

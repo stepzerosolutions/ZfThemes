@@ -7,6 +7,7 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfThemes\Model\LayoutxmlProcessor;
 
 /**
  *
@@ -14,7 +15,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * Theme functions manager
  *
  */
-class ThemefileManager
+class ThemefileManager extends LayoutxmlProcessor
 implements ServiceManagerAwareInterface, EventManagerAwareInterface
 {
     private $serviceManager;
@@ -22,7 +23,7 @@ implements ServiceManagerAwareInterface, EventManagerAwareInterface
     public $newThemeRoot;
     public $newpublicThemeRoot;
     public $currentModules;
-    private $cwd;
+    public $cwd;
     private $themeNames = array('default');
     public $globalconfigFile;
     public $output = array();
@@ -31,9 +32,9 @@ implements ServiceManagerAwareInterface, EventManagerAwareInterface
     function __construct( ServiceLocatorInterface $serviceLocator)
     {
         $this->cwd = getcwd();
-        $this->currentModules = $this->cwd . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR;
-        $this->newThemeRoot = $this->cwd . DIRECTORY_SEPARATOR . 'themes';
-        $this->newpublicThemeRoot = $this->cwd . DIRECTORY_SEPARATOR . 'public'. DIRECTORY_SEPARATOR. 'themes';
+        $this->currentModules = $this->getModuleLocation();
+        $this->newThemeRoot = $this->getThemeLocation();
+        $this->newpublicThemeRoot = $this->getPublicThemeRootLocation();
         $this->serviceLocator = $serviceLocator;
     }
 
@@ -157,10 +158,13 @@ implements ServiceManagerAwareInterface, EventManagerAwareInterface
                 if( !is_dir( $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.$value ) ) {
                     mkdir($this->newpublicThemeRoot.DIRECTORY_SEPARATOR.$value);
                     array_push( $this->output, sprintf('Folder %s created.', $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.$value ) );
-                    mkdir($this->newpublicThemeRoot.DIRECTORY_SEPARATOR.$value.DIRECTORY_SEPARATOR.'module');
-                    array_push( $this->output, sprintf('Folder %s created.', $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.$value.DIRECTORY_SEPARATOR.'module' ) );
                 }
             }
+        }
+        //create module public folder
+        if( !is_dir( $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.'module') ) {
+            mkdir($this->newpublicThemeRoot.DIRECTORY_SEPARATOR.'module');
+            array_push( $this->output, sprintf('Folder %s created.', $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.'module' ) );
         }
     }
     

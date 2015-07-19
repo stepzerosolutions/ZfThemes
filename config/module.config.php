@@ -2,24 +2,23 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'ZfThemes\Controller\Zftheme' => 'ZfThemes\Controller\ZfthemeController',
+            'Zftheme' => 'ZfThemes\Controller\ZfthemeController',
         ),
     ),
     'router' => array(
         'routes' => array(
             'zf-themes' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    // Change this to something specific to your module
-                    'route'    => '/zftheme',
-                    'defaults' => array(
-                        // Change this value to reflect the namespace in which
-                        // the controllers for your module are found
-                        '__NAMESPACE__' => 'ZfThemes\Controller',
-                        'controller'    => 'Zftheme',
-                        'action'        => 'index',
-                    ),
-                ),
+                 'type'    => 'segment',
+                 'options' => array(
+                     'route'    => '/zfthemes[/:action]',
+                     'constraints' => array(
+                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                     ),
+                     'defaults' => array(
+                         'controller' => 'Zftheme',
+                         'action'     => 'index',
+                     ),
+                 ),
             ),
         ),
     ),

@@ -30,9 +30,8 @@ implements ServiceManagerAwareInterface
         // Save content to public/themes/(([a-z][A-Z][0-9])*)/module/(modulename)
         foreach( $modules as $module ){
             $modulePublic = $this->cwd.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR.'public';
-            $saveLocation = $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.$module;
-            
-            if( file_exists($modulePublic) ) {
+            $saveLocation = $this->newpublicThemeRoot.DIRECTORY_SEPARATOR.'module'.DIRECTORY_SEPARATOR.$module;
+             if( file_exists($modulePublic) ) {
                 $isempty = $this->is_dir_empty( $modulePublic );
                 if( !is_dir($saveLocation) && !$isempty ){
                     mkdir($saveLocation);

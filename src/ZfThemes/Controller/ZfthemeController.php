@@ -9,11 +9,11 @@
 
 namespace ZfThemes\Controller;
 
-use ZbeAdmin\Controller\AdminController;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Authentication\AuthenticationService;
-use ZfThemes\Manager\PublicfilestructureManager;
+use ZfThemes\Manager\LayoutManager;
 
-class ZfthemeController extends AdminController
+class ZfthemeController extends AbstractActionController
 {
     /*
     * First starting point function
@@ -35,13 +35,31 @@ class ZfthemeController extends AdminController
         $themeManager = $this->getServiceLocator()->get('templateMapService');
         $publicfilestructureManager = $this->getServiceLocator()->get('publicfilestructureManager');
         
-        $themefileManager->setThemeFileStructure();
-        $themeManager->processTemplateMapping();
+        // This will create theme file structure
+        //$themefileManager->setThemeFileStructure();
+         
+        //$themeManager->processTemplateMapping();
         $publicfilestructureManager->readModules();
         $publicfilestructureManager->movePublicToThemes();
-
-        
         return array('output' => $themefileManager->output);
+    }
+    
+    
+    
+    /*
+     */
+    public function layoutAction()
+    {
+        $this->authService = new AuthenticationService();
+        if( ! $this->authService->hasIdentity() ){
+            $this->redirectAdminIndex();
+        }
+        $layout = $this->layout();
+        $layout->setTemplate('zfThemes/Zftheme/index');
+        $layoutManager = new LayoutManager( $this->getServiceLocator() );
+        $layoutManager->generateGlobalLayout();//var_dump( $layoutManager->output);
+        return array('output' => $layoutManager->output);
+
     }
     
     

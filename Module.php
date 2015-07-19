@@ -10,9 +10,47 @@
 namespace ZfThemes;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\Mvc\MvcEvent;
 
 class Module implements AutoloaderProviderInterface
 {
+
+    public function onBootstrap( MvcEvent $event ){
+        $app = $event->getApplication();
+        $app->getEventManager()->attach('render', array($this, 'processThemeLayout'));
+         
+        $this->serviceManager = $app->getServiceManager();
+        $sem = $app->getEventManager()->getSharedManager();
+        $sem->attach( 'ZbeCore\Service\ClearCache', 'clearCacheFiles.pre', array( $this, 'processAdminCacheClean') );
+    }
+    
+    public function processThemeLayout( MvcEvent $event ){
+        //LOAD HEAD SCRIPTS
+        $serviceManager = $event->getApplication()->getServiceManager();
+        $sharedEvents = $event->getApplication()->getEventManager()->getSharedManager();
+        $themeviewhelperFactory = $serviceManager->get('ThemeviewhelperFactory');
+        $themeviewhelperFactory->processInit();
+        $themeviewhelperFactory->processStyles();
+    }
+     
+     
+    /**
+     * @param  MvcEvent $events
+     * @return void
+     */
+    public function processAdminCacheClean( $events ){
+    
+        $cacheItems = array(
+            'form_adminconfiguration_groups','headerScripts_defaultXml',
+            'headerScripts_controllerActionXml_admin','sidebar_admin_configuration'
+        );
+        $this->serviceManager->get('cache')->removeItems( $cacheItems );
+    
+    
+        //$events->getServiceManager()->get('cache')->removeItems($cacheItems);
+    
+    }
+    
     public function getAutoloaderConfig()
     {
         return array(
@@ -41,6 +79,7 @@ class Module implements AutoloaderProviderInterface
                 'themefileServices' => 'ZfThemes\Service\themefileFactory',
                 'templateMapService' => 'ZfThemes\Service\templatemapFactory',
                 'publicfilestructureManager' => 'ZfThemes\Service\PublicfilestructureFactory',
+                'ThemeviewhelperFactory' => 'ZfThemes\Service\ThemeviewhelperFactory',
             )
         );
     }
