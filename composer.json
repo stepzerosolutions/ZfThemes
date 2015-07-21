@@ -1,7 +1,7 @@
 {
   "name" : "stepzerosolutions/zfthemes",
   "description" : "Zend framework 2 theme support function",
-  "version" : "1.0.0",
+  "version" : "1.0.1",
   "require" : {
     "zendframework/zendframework" : "~2.4"
   },
